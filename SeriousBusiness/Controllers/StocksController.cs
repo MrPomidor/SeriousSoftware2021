@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SeriousBusiness.Stocks.DataComparison;
 using SeriousBusiness.Stocks.DataProviders;
 using System;
@@ -9,6 +10,7 @@ using StockConsts = SeriousBusiness.Stocks.Consts;
 
 namespace SeriousBusiness.Controllers
 {
+    [AllowAnonymous]
     [ApiController]
     [Route("stocks")]
     public class StocksController : ControllerBase
@@ -29,15 +31,15 @@ namespace SeriousBusiness.Controllers
         [HttpGet("/compareWithSpy/{symbol}")]
         public async Task<CompareResultsDto> CompareWithSPY(string symbol)
         {
-            // TODO validate symbol
-            //if (!await _dataProvider.ValidateSymbolAsync(symbol))
-            //{
-            //    throw new Exception("invalid request !"); // TODO special exception type
-            //}
-
-            var symbolData = await _dataProvider.GetWeekStockDataAsync(symbol);
+            // validate symbol
+            if (!await _dataProvider.ValidateSymbolAsync(symbol))
+            {
+                throw new Exception("invalid request !"); // TODO special exception type
+            }
 
             // load data from last week
+            var symbolData = await _dataProvider.GetWeekStockDataAsync(symbol);
+
             // save/update data in db
             // get data for SPY
             var spyData = await _dataProvider.GetWeekStockDataAsync(StockConsts.Symbols.SNP500);

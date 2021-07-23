@@ -23,6 +23,9 @@
     <None Update="Stocks\DataProviders\Yahoo\GetStockChartsResponse.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Stocks\DataProviders\Yahoo\GetStockProfileResponse.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

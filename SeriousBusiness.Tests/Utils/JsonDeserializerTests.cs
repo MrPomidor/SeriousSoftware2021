@@ -2,8 +2,6 @@
 using SeriousBusiness.Tests.TestUtils;
 using SeriousBusiness.Utils;
 using Shouldly;
-using System;
-using System.IO;
 using System.Linq;
 using Xunit;
 
@@ -30,6 +28,21 @@ namespace SeriousBusiness.Tests.Utils
             (obj.Chart?.Result?.Length).ShouldBe(1);
             (obj.Chart?.Result.Single().Timestamp?.Length).ShouldBe(21);
             (obj.Chart?.Result.Single().Indicators?.Adjclose?.SingleOrDefault()?.Adjclose?.Length).ShouldBe(21);
+        }
+
+
+        [Fact]
+        public void ShouldDeserializeCorrectly_StockProfileResponse()
+        {
+            const string filePath = "Stocks/DataProviders/Yahoo/GetStockProfileResponse.json";
+
+            var contentJson = FileUtils.GetFileContentString(filePath);
+
+            var obj = deserializer.Deserialize<StockProfileResponse>(contentJson);
+
+            obj.ShouldNotBeNull();
+            obj.Symbol.ShouldNotBeNull();
+            obj.AssetProfile.ShouldNotBeNull();
         }
     }
 }

@@ -1,7 +1,5 @@
 ﻿using SeriousBusiness.Utils;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -10,11 +8,12 @@ namespace SeriousBusiness.Stocks.DataProviders.Yahoo
     public interface IYahooClient
     {
         Task<StockChartsResponse> GetMonthDaylyStockChartsAsync(string symbol);
+        Task<StockProfileResponse> GetStockProfile(string symbol);
     }
 
-    public class YahooClient // TODO interface
+    public class YahooClient : IYahooClient
     {
-        private const string ApiKey = ""; // TODO fill
+        private const string ApiKey = ""; // TODO move to app configuration
         private const string BaseUrl = "https://apidojo-yahoo-finance-v1.p.rapidapi.com";
         private const string Region = "US";
         private const string Lang = "en";
@@ -28,6 +27,9 @@ namespace SeriousBusiness.Stocks.DataProviders.Yahoo
 
         public async Task<StockChartsResponse> GetMonthDaylyStockChartsAsync(string symbol)
         {
+            if (string.IsNullOrEmpty(symbol))
+                throw new ArgumentException("Symbol cannot be empty", nameof(symbol));
+
             const string interval = "1d";
             const string range = "1mo";
             var uri = $"{BaseUrl}/stock/v2/get-chart?" +
@@ -39,6 +41,19 @@ namespace SeriousBusiness.Stocks.DataProviders.Yahoo
 
             using var client = new HttpClient();
             var response = await GetResponseAsync<StockChartsResponse>(client, request);
+            return response;
+        }
+
+        public async Task<StockProfileResponse> GetStockProfile(string symbol)
+        {
+            var uri = $"{BaseUrl}/stock/v2/get-profile?" +
+                $"symbol={symbol}&" +
+                $"region={Region}";
+            var request = CreateGetRequest(uri);
+
+            using var client = new HttpClient();
+            var response = await GetResponseAsync<StockProfileResponse>(client, request);
+            response = response?.Symbol == null && response?.AssetProfile == null ? null : response;
             return response;
         }
 

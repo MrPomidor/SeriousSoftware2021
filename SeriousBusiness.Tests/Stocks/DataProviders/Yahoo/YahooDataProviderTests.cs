@@ -39,12 +39,43 @@ namespace SeriousBusiness.Tests.Stocks.DataProviders.Yahoo
             results.Items[4].Value.ShouldBe(280.75m);
         }
 
+        [Fact]
+        public async Task ValidateSymbolAsync_SymbolCorrect_ShouldReturnTrue()
+        {
+            var symbol = "SPY";
+
+            clientSubstitute.GetStockProfile(symbol).Returns(GetCorrectGetStockProfileResponse());
+
+            var result = await dataProvider.ValidateSymbolAsync(symbol);
+            result.ShouldBeTrue();
+        }
+
+        [Fact]
+        public async Task ValidateSymbolAsync_SymbolIncorrect_ShouldReturnFalse()
+        {
+            var symbol = "Incorrect";
+
+            clientSubstitute.GetStockProfile(symbol).Returns((StockProfileResponse)null);
+
+            var result = await dataProvider.ValidateSymbolAsync(symbol);
+            result.ShouldBeFalse();
+        }
+
         // returns real response with dates from June 22, 2021 to July 21, 2021
         private StockChartsResponse GetCorrectGetStockChartsResponse()
         {
             const string filePath = "Stocks/DataProviders/Yahoo/GetStockChartsResponse.json";
             var contentJson = FileUtils.GetFileContentString(filePath);
             var obj = new JsonDeserializer().Deserialize<StockChartsResponse>(contentJson);
+            return obj;
+        }
+
+        // returns real response for SPY
+        private StockProfileResponse GetCorrectGetStockProfileResponse()
+        {
+            const string filePath = "Stocks/DataProviders/Yahoo/GetStockProfileResponse.json";
+            var contentJson = FileUtils.GetFileContentString(filePath);
+            var obj = new JsonDeserializer().Deserialize<StockProfileResponse>(contentJson);
             return obj;
         }
     }
