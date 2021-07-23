@@ -18,7 +18,7 @@ namespace SeriousBusiness.Stocks.DataProviders.Yahoo
             _dateTimeProvider = dateTimeProvider;
         }
 
-        public async Task<StockDataDto> GetWeekStockDataAsync(string symbol)
+        public async Task<StockDataDto> GetPreviousWeekStockDataAsync(string symbol)
         {
             var clientDto = await _client.GetMonthDaylyStockChartsAsync(symbol);
 

@@ -1,5 +1,5 @@
-﻿using SeriousBusiness.Stocks.DataComparison;
-using SeriousBusiness.Stocks.DataProviders;
+﻿using SeriousBusiness.Stocks;
+using SeriousBusiness.Stocks.DataComparison;
 using Shouldly;
 using System;
 using System.Collections.Generic;

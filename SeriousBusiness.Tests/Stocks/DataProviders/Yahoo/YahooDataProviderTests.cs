@@ -29,7 +29,7 @@ namespace SeriousBusiness.Tests.Stocks.DataProviders.Yahoo
             clientSubstitute.GetMonthDaylyStockChartsAsync(symbol).Returns(GetCorrectGetStockChartsResponse());
             dateTimeProviderSubstitute.Now.Returns(new DateTime(2021, 7, 21));
 
-            var results = await dataProvider.GetWeekStockDataAsync(symbol);
+            var results = await dataProvider.GetPreviousWeekStockDataAsync(symbol);
             results.ShouldNotBeNull();
             results.Symbol.ShouldBe(symbol);
             (results.Items?.Count).ShouldBe(5); // last week except weekends

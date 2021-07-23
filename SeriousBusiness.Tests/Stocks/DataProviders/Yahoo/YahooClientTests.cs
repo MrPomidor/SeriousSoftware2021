@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using StockConsts = SeriousBusiness.Stocks.Consts;
 
 namespace SeriousBusiness.Tests.Stocks.DataProviders.Yahoo
 {
@@ -21,7 +22,7 @@ namespace SeriousBusiness.Tests.Stocks.DataProviders.Yahoo
 
         [Theory(Skip = "API key should be configured in YahooClient class to run this tests")]
         [InlineData("MSFT")]
-        [InlineData("SPY")]
+        [InlineData(StockConsts.Symbols.SNP500)]
         public async Task GetMonthDaylyStockChartsAsync_SymbolsCorrect_ShouldNotThrow(string symbol)
         {
             var clientResponse = await client.GetMonthDaylyStockChartsAsync(symbol);

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SeriousBusiness.Stocks.DataProviders
+namespace SeriousBusiness.Stocks
 {
     public class StockDataDto
     {
