@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SeriousBusiness.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -6,13 +7,24 @@ using System.Threading.Tasks;
 
 namespace SeriousBusiness.Stocks.DataProviders.Yahoo
 {
-    public class YahooClient
+    public interface IYahooClient
+    {
+        Task<StockChartsResponse> GetMonthDaylyStockChartsAsync(string symbol);
+    }
+
+    public class YahooClient // TODO interface
     {
         private const string ApiKey = ""; // TODO fill
         private const string BaseUrl = "https://apidojo-yahoo-finance-v1.p.rapidapi.com";
         private const string Region = "US";
         private const string Lang = "en";
         private const string Host = "apidojo-yahoo-finance-v1.p.rapidapi.com";
+
+        private readonly IJsonDeserializer _jsonDeserializer;
+        public YahooClient(IJsonDeserializer jsonDeserializer)
+        {
+            _jsonDeserializer = jsonDeserializer;
+        }
 
         public async Task<StockChartsResponse> GetMonthDaylyStockChartsAsync(string symbol)
         {
@@ -49,13 +61,8 @@ namespace SeriousBusiness.Stocks.DataProviders.Yahoo
             using var response = await client.SendAsync(request);
             response.EnsureSuccessStatusCode(); // TODO custom exception
             var body = await response.Content.ReadAsStringAsync();
-            var responseDto = Deserialize<T>(body);
+            var responseDto = _jsonDeserializer.Deserialize<T>(body);
             return responseDto;
-        }
-
-        private T Deserialize<T>(string bodyStr)
-        {
-            throw new NotImplementedException();
         }
 
     }

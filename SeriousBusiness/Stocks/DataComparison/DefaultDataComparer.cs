@@ -38,12 +38,12 @@ namespace SeriousBusiness.Stocks.DataComparison
                     Symbol1Data = new CompareResultsDtoItemSymbolData
                     {
                         Symbol = stockDataRight.Symbol,
-                        Value = dataRight.Value
+                        Value = rightCompareDataRaw[i]
                     },
                     Symbol2Data = new CompareResultsDtoItemSymbolData
                     {
                         Symbol = stockDataLeft.Symbol,
-                        Value = dataLeft.Value
+                        Value = leftCompareDataRaw[i]
                     }
                 };
                 results.Items.Add(compareItem);
