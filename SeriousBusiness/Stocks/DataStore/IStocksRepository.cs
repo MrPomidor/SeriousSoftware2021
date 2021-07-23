@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace SeriousBusiness.Stocks.DataStore
+﻿namespace SeriousBusiness.Stocks.DataStore
 {
     public interface IStocksRepository
     {

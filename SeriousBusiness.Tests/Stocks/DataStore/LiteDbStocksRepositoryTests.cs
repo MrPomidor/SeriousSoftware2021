@@ -1,9 +1,6 @@
 ﻿using SeriousBusiness.Stocks;
 using SeriousBusiness.Stocks.DataStore;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace SeriousBusiness.Tests.Stocks.DataStore

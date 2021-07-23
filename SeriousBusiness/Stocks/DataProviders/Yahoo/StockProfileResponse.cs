@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace SeriousBusiness.Stocks.DataProviders.Yahoo
+﻿namespace SeriousBusiness.Stocks.DataProviders.Yahoo
 {
     public class StockProfileResponse
     {
