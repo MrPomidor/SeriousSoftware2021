@@ -72,7 +72,7 @@ namespace SeriousBusiness.Stocks.DataProviders.Yahoo
             return DateTimeOffset.FromUnixTimeSeconds(epoch).UtcDateTime;
         }
 
-        public async Task<bool> ValidateSymbolAsync(string symbol)
+        public async Task<bool> SymbolExistsAsync(string symbol)
         {
             var clientDto = await _client.GetStockProfile(symbol);
             return clientDto != null;

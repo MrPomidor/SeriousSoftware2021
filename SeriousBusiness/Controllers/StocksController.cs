@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SeriousBusiness.Infrastructure;
 using SeriousBusiness.Stocks;
 using SeriousBusiness.Stocks.DataComparison;
 using SeriousBusiness.Stocks.DataProviders;
@@ -14,7 +15,6 @@ using StockConsts = SeriousBusiness.Stocks.Consts;
 
 namespace SeriousBusiness.Controllers
 {
-    [AllowAnonymous]
     [ApiController]
     [Route("stocks")]
     public class StocksController : ControllerBase
@@ -36,14 +36,16 @@ namespace SeriousBusiness.Controllers
             _dateTimeProvider = dateTimeProvider;
         }
 
-        // TODO exception processing filter
-
-        [HttpGet("/compareWithSpy/{symbol}")]
+        [AllowAnonymous]
+        [HttpGet("compareWithSpy/{symbol}")]
         public async Task<CompareResultsDto> CompareWithSPY(string symbol)
         {
             // validate symbol
-            if (!await _dataProvider.ValidateSymbolAsync(symbol))
-                throw new Exception("invalid request !"); // TODO special exception type
+            if (string.IsNullOrEmpty(symbol))
+                throw new InvalidInputException("Symbol could not be empty");
+
+            if (!await _dataProvider.SymbolExistsAsync(symbol))
+                throw new InvalidInputException("Symbol does not exist");
 
             // load data from last week
             var symbolData = await GetSymbolStocks(symbol);

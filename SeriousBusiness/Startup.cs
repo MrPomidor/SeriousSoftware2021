@@ -6,6 +6,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using SeriousBusiness.Infrastructure;
+using SeriousBusiness.Stocks.DataComparison;
+using SeriousBusiness.Stocks.DataProviders;
+using SeriousBusiness.Stocks.DataProviders.Yahoo;
+using SeriousBusiness.Stocks.DataStore;
+using SeriousBusiness.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +31,19 @@ namespace SeriousBusiness
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers(options =>
+            {
+                options.Filters.Add(typeof(ErrorHandlingFilter));
+            });
+
+            services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+            services.AddSingleton<IJsonDeserializer, JsonDeserializer>();
+
+            services.AddTransient<IDataComparer, DefaultDataComparer>();
+            services.AddTransient<IStocksRepository, LiteDbStocksRepository>();
+            services.AddTransient<IDataProvider, YahooDataProvider>();
+            services.AddTransient<IYahooClient, YahooClient>();
+            services.AddTransient<IYahooClientConfiguration, YahooClientConfiguration>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

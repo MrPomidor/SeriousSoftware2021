@@ -1,4 +1,5 @@
-﻿using SeriousBusiness.Stocks.DataProviders.Yahoo;
+﻿using NSubstitute;
+using SeriousBusiness.Stocks.DataProviders.Yahoo;
 using SeriousBusiness.Utils;
 using Shouldly;
 using System;
@@ -16,8 +17,9 @@ namespace SeriousBusiness.Tests.Stocks.DataProviders.Yahoo
         private readonly YahooClient client;
         public YahooClientTests()
         {
-            // TODO yahoo client configuration
-            client = new YahooClient(new JsonDeserializer());
+            var configuration = Substitute.For<IYahooClientConfiguration>();
+            configuration.ApiKey.Returns("INPUT YOUR API KEY HERE");
+            client = new YahooClient(new JsonDeserializer(), configuration);
         }
 
         [Theory(Skip = "API key should be configured in YahooClient class to run this tests")]

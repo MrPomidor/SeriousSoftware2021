@@ -7,7 +7,7 @@ namespace SeriousBusiness.Stocks.DataProviders
 {
     public interface IDataProvider
     {
-        Task<bool> ValidateSymbolAsync(string symbol);
+        Task<bool> SymbolExistsAsync(string symbol);
         Task<StockDataDto> GetPreviousWeekStockDataAsync(string symbol);
     }
 }

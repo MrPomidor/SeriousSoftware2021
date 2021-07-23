@@ -13,16 +13,19 @@ namespace SeriousBusiness.Stocks.DataProviders.Yahoo
 
     public class YahooClient : IYahooClient
     {
-        private const string ApiKey = ""; // TODO move to app configuration
         private const string BaseUrl = "https://apidojo-yahoo-finance-v1.p.rapidapi.com";
         private const string Region = "US";
-        private const string Lang = "en";
         private const string Host = "apidojo-yahoo-finance-v1.p.rapidapi.com";
 
         private readonly IJsonDeserializer _jsonDeserializer;
-        public YahooClient(IJsonDeserializer jsonDeserializer)
+        private readonly IYahooClientConfiguration _configuration;
+        public YahooClient(
+            IJsonDeserializer jsonDeserializer,
+            IYahooClientConfiguration configuration
+            )
         {
             _jsonDeserializer = jsonDeserializer;
+            _configuration = configuration;
         }
 
         public async Task<StockChartsResponse> GetMonthDaylyStockChartsAsync(string symbol)
@@ -65,7 +68,7 @@ namespace SeriousBusiness.Stocks.DataProviders.Yahoo
                 RequestUri = new Uri(uri),
                 Headers =
                 {
-                    { "x-rapidapi-key", ApiKey },
+                    { "x-rapidapi-key", _configuration.ApiKey },
                     { "x-rapidapi-host", Host },
                 },
             };

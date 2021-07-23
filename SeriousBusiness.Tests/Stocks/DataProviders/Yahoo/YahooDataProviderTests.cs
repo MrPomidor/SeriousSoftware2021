@@ -46,7 +46,7 @@ namespace SeriousBusiness.Tests.Stocks.DataProviders.Yahoo
 
             clientSubstitute.GetStockProfile(symbol).Returns(GetCorrectGetStockProfileResponse());
 
-            var result = await dataProvider.ValidateSymbolAsync(symbol);
+            var result = await dataProvider.SymbolExistsAsync(symbol);
             result.ShouldBeTrue();
         }
 
@@ -57,7 +57,7 @@ namespace SeriousBusiness.Tests.Stocks.DataProviders.Yahoo
 
             clientSubstitute.GetStockProfile(symbol).Returns((StockProfileResponse)null);
 
-            var result = await dataProvider.ValidateSymbolAsync(symbol);
+            var result = await dataProvider.SymbolExistsAsync(symbol);
             result.ShouldBeFalse();
         }
 

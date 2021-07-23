@@ -21,6 +21,11 @@ namespace SeriousBusiness
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.ConfigureLogging(builder =>
+                     {
+                         builder.AddConsole();
+                         builder.AddLog4Net();
+                     });
                 });
     }
 }
